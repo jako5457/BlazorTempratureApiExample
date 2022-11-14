@@ -1,11 +1,12 @@
 ﻿using Blazor_Radzen_Data_Example.Shared;
+using System;
 
 namespace Blazor_Radzen_Data_Example.Client.Services
 {
     public class RandomTempratureService : ITempratureService
     {
         private Random _Random;
-        int seed = 1009432120;
+        int seed = 11;
 
         public RandomTempratureService()
         {
@@ -14,7 +15,7 @@ namespace Blazor_Radzen_Data_Example.Client.Services
 
         public Task<TempraureInfo> GetLatestTempratureAsync()
         {
-            var info = new TempraureInfo() { TempratureC = _Random.NextDouble(), Date = DateTime.Now };
+            var info = new TempraureInfo() { TempratureC = Math.Round(_Random.NextDouble() * (40 - -10) + -10,1), Date = DateTime.Now };
 
             return Task.FromResult(info);
         }
@@ -42,7 +43,7 @@ namespace Blazor_Radzen_Data_Example.Client.Services
                 date = date.AddMinutes(-30);
                 yield return new TempraureInfo()
                 {
-                    TempratureC = random.NextDouble(),
+                    TempratureC = Math.Round(random.NextDouble() * (40 - -10) + -10,1),
                     Date = date,
                 };
             }
