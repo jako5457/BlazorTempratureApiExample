@@ -1,0 +1,21 @@
+﻿@page "/"
+@inject NotificationService _Notifier
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<RadzenButton Text="Hi" Click="click"></RadzenButton>
+
+@code{
+
+    public void click()
+    {
+        _Notifier.Notify(summary: "Hello", detail: "world");
+    }
+
+}
