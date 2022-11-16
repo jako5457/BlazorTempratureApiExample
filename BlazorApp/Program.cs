@@ -26,6 +26,12 @@ builder.Services.AddHttpClient<TempratureApiService>(options =>
 })
 .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).WaitAndRetryAsync(3, t => new TimeSpan(0, 0, 10 * t)));
 
+builder.Services.AddOidcAuthentication(options =>
+{
+    options.ProviderOptions.MetadataUrl = "http://10.135.71.158:8080/realms/TestRealm/.well-known/openid-configuration";
+    options.ProviderOptions.ClientId = "BlazorClient";
+});
+
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 await builder.Build().RunAsync();

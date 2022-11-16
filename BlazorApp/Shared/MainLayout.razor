@@ -1,5 +1,11 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Extensions.Options
+
+@inject IOptionsSnapshot<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> Options
+@inject NavigationManager _Nav
+
 <RadzenDialog />
 <RadzenNotification />
 <RadzenContextMenu />
@@ -12,7 +18,7 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <RadzenButton Click="Login" >Login</RadzenButton>
         </div>     
 
         <article class="content px-4">
@@ -20,3 +26,12 @@
         </article>
     </main>
 </div>
+
+@code{
+    public async Task Login()
+    {
+        _Nav.NavigateTo(Options.Get(
+            Microsoft.Extensions.Options.Options.DefaultName)
+            .AuthenticationPaths.LogInPath);
+    }
+}
