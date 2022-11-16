@@ -23,13 +23,15 @@ namespace Blazor_Radzen_Data_Example.Client.Services
         public Task<List<TempraureInfo>> GetTempraturesAsync(DateTime start,DateTime end)
         {
 
-            var timeSpan = start.Subtract(end);
+            var timeSpan = end.Subtract(start);
 
             var temps = new List<TempraureInfo>().InfinityRandom(_Random,start);
 
-            int segments = Convert.ToInt32(timeSpan.TotalMinutes / 30);
+            int segments = Convert.ToInt32(timeSpan.TotalMinutes / 10);
 
-            return Task.FromResult(temps.Take(segments).ToList());
+            var results = temps.Take(segments).ToList();
+
+            return Task.FromResult(results);
         }
     }
 
@@ -40,7 +42,7 @@ namespace Blazor_Radzen_Data_Example.Client.Services
             DateTime date = startDate;
             while (true)
             {
-                date = date.AddMinutes(-30);
+                date = date.AddMinutes(-10);
                 yield return new TempraureInfo()
                 {
                     TempratureC = Math.Round(random.NextDouble() * (40 - -10) + -10,1),

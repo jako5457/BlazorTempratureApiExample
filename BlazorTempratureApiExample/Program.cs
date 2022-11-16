@@ -11,6 +11,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<ITempratureService, RandomTempratureService>();
 
+builder.Services.AddCors(config =>
+{
+    config.AddPolicy("DefaultPolicy", builder =>
+    {
+        builder.WithOrigins("https://localhost:7076")
+               .AllowCredentials()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("DefaultPolicy");
 
 app.UseHttpsRedirection();
 

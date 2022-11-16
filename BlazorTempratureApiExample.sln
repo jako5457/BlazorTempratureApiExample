@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTempratureApiExample", "BlazorTempratureApiExample\BlazorTempratureApiExample.csproj", "{20595F28-034B-43B1-B744-3DCCEBBCB103}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTempratureApiExample", "BlazorTempratureApiExample\BlazorTempratureApiExample.csproj", "{20595F28-034B-43B1-B744-3DCCEBBCB103}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{141DB492-75B1-4511-A13D-05B9B0047030}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{141DB492-75B1-4511-A13D-05B9B0047030}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

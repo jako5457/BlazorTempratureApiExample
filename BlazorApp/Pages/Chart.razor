@@ -1,0 +1,42 @@
+﻿@page "/chart"
+@inject NotificationService _Notifier
+@inject TempratureApiService _TempApiService
+
+<RadzenButton IsBusy="IsBusy" BusyText="Loading" Click="Refresh">Refresh</RadzenButton>
+
+<RadzenChart>
+    <RadzenMarkers MarkerType="MarkerType.Square" />
+    <RadzenLineSeries Data="@tempraures" CategoryProperty="@nameof(TempraureInfo.Date)" ValueProperty="@nameof(TempraureInfo.TempratureC)" />
+</RadzenChart>
+
+@code {
+    List<TempraureInfo> tempraures = new List<TempraureInfo>();
+
+    bool IsBusy = false;
+
+    DateTime StartDate = DateTime.Now;
+    DateTime EndDate = DateTime.Now.AddHours(5);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task Refresh()
+    {
+        IsBusy = true;
+        try
+        {
+            tempraures = await _TempApiService.GetTempraturesAsync(StartDate, EndDate);
+        }
+        catch (Exception e)
+        {
+            _Notifier.Notify(NotificationSeverity.Error, "Error", e.Message);
+        }
+        finally{
+            IsBusy = false;
+        }
+    }
+
+}

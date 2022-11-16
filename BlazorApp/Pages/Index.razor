@@ -1,21 +1,44 @@
 ﻿@page "/"
 @inject NotificationService _Notifier
+@inject TempratureApiService _TempApiService
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Dashboard</PageTitle>
 
-<h1>Hello, world!</h1>
+<RadzenButton IsBusy="IsBusy" BusyText="Loading" Click="Refresh">Refresh</RadzenButton>
 
-Welcome to your new app.
+<RadzenArcGauge Style="width: 300px; height: 300px">
+  <RadzenArcGaugeScale Min="-10" Max="40" Step="10">
+    <RadzenArcGaugeScaleValue Value="Info.TempratureC" />
+  </RadzenArcGaugeScale>
+</RadzenArcGauge>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
 
-<RadzenButton Text="Hi" Click="click"></RadzenButton>
 
 @code{
+    bool IsBusy = false;
 
-    public void click()
+    TempraureInfo Info = new TempraureInfo();
+
+    protected override async Task OnInitializedAsync()
     {
-        _Notifier.Notify(summary: "Hello", detail: "world");
+        await Refresh();
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Refresh()
+    {
+        IsBusy = true;
+
+        try
+        {
+            Info = await _TempApiService.GetCurrentAsync();
+        }
+        catch (Exception e)
+        {
+            _Notifier.Notify(NotificationSeverity.Error, "Error", e.Message);
+        }
+        IsBusy = false;
     }
 
 }
