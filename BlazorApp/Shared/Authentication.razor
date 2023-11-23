@@ -13,7 +13,13 @@
 
             Navigation.NavigateTo($"{authority}/v2/logout?client_id={clientId}");
         }
+        Log out
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
     </LogOut>
+    <LoggingIn>
+        Logging in
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Primary" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </LoggingIn>
 </RemoteAuthenticatorView>
 
 @code {
