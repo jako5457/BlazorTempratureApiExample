@@ -1,9 +1,31 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
-<RemoteAuthenticatorView Action="@Action" />
+@inject NotificationService _Notifier
+@inject AuthenticationStateProvider _AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="Success" >
+    <LogOut>
+        @{
+            var authority = Secrets.Oauth_Authority;
+            var clientId = Secrets.Oauth_ClientId;
+
+            Navigation.NavigateTo($"{authority}/v2/logout?client_id={clientId}");
+        }
+    </LogOut>
+</RemoteAuthenticatorView>
 
 @code {
     [Parameter]
     public string Action { get; set; }
+
+    public async Task Success(RemoteAuthenticationState authstate)
+    {
+        var state = await _AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        _Notifier.Notify(NotificationSeverity.Success, $"Welcome {state.User.Identity.Name}","You are now logged in");
+
+        StateHasChanged();
+    }
 }

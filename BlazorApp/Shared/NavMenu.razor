@@ -23,9 +23,21 @@
 </div>
 
 @code {
+    [CascadingParameter] public AuthenticationState authenticationState { get; set; } = default!;
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override Task OnInitializedAsync()
+    {
+        if(authenticationState != null)
+        {
+            string name = authenticationState.User.Identity.Name;
+        }
+
+        return base.OnInitializedAsync();
+    }
 
     private void ToggleNavMenu()
     {

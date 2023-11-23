@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(); 
 
 builder.Services.AddTransient<ITempratureService, RandomTempratureService>();
 
@@ -15,7 +15,7 @@ builder.Services.AddCors(config =>
 {
     config.AddPolicy("DefaultPolicy", builder =>
     {
-        builder.WithOrigins("https://localhost:7076")
+        builder.WithOrigins("https://localhost:5001")
                .AllowCredentials()
                .AllowAnyHeader()
                .AllowAnyMethod();

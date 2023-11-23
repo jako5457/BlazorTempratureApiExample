@@ -1,4 +1,10 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using System.Security.Claims
+@using System.Text.Json;
+@inject AuthenticationStateProvider _AuthenticationStateProvider
+@inject ILogger<App> _Logger
+
+<CascadingValue Value="@state">
+    <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +16,44 @@
         </LayoutView>
     </NotFound>
 </Router>
+</CascadingValue>
+
+@code {
+    Task<AuthenticationState> state = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        state = GetStateAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task<AuthenticationState> GetStateAsync()
+    {
+        var state = await _AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (state.User.Identity.IsAuthenticated)
+        {
+
+            var roles = state.User.Claims.Where(c => c.Type == "role").FirstOrDefault();
+
+            if (roles != null)
+            {
+                var roleList = JsonSerializer.Deserialize<string[]>(roles.Value);
+
+                ClaimsIdentity claims = new ClaimsIdentity();
+
+                foreach (var role in roleList)
+                {
+                    var claim = new Claim(ClaimTypes.Role,role);
+                    claims.AddClaim(claim);
+                }
+
+                state.User.AddIdentity(claims);
+            }
+        }
+
+        return state;
+    }
+
+}
